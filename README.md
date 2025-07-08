@@ -6,8 +6,10 @@ I am https://www.printables.com/@flyCouch_2499054/models
 Helpful items for these robots.
 
 So far,
-Direct X/Y/R commanding
+Direct X/Y/R directing
 
-Gcode commanding
+Gcode directing
+
+Joystick directing
 
 More to come.
