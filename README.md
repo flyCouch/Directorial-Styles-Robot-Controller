@@ -13,3 +13,5 @@ Gcode directing
 Joystick directing
 
 More to come.
+
+Copyright Ron Lyttle 2025.
