@@ -1,0 +1,78 @@
+/**
+ * @file ultrasonic_sound_map_summary.cpp
+ * @brief Summary of the ultrasonic sound map localization experiment.
+ *
+ * This file provides a high-level overview and code-friendly summary of the planned
+ * experiment to create a 3D localization system using ultrasonic sensors and
+ * Arduino Nanos.
+ */
+
+#include <Arduino.h>
+
+// --- EXPERIMENT GOAL ---
+// The primary objective is to prove the concept of using a "sound map" for
+// static position localization.
+// - Method: Measure the intensity of two distinct ultrasonic tones at various
+//   points to create a positional "fingerprint."
+
+// --- HARDWARE CONFIGURATION ---
+
+// 1. Emitter Nanos (2x)
+//    - Role: Continuously emit a specific ultrasonic tone.
+//    - Components:
+//        - Arduino Nano
+//        - Ultrasonic speaker
+//        - **IRF530 MOSFET:** Acts as a driver circuit to amplify the Nano's
+//          output and power the speaker.
+//    - Emitter 1 Frequency: 40kHz
+//    - Emitter 2 Frequency: 75kHz
+
+// 2. Receiver Nano (1x)
+//    - Role: Listen to the environment and measure the tone intensities.
+//    - Components:
+//        - Arduino Nano
+//        - Ultrasonic microphone (e.g., from an HC-SR04 module)
+//        - **LM386 Amplifier:** Boosts the weak microphone signal for the Nano's
+//          analog input.
+
+// --- SOFTWARE LOGIC ---
+
+// 1. Emitter Code (on each Emitter Nano)
+//    - Use a tone-generation function to drive a digital pin at the specified frequency.
+//    - Example for Emitter 1 (40kHz):
+//      void setup() {
+//        pinMode(speakerPin, OUTPUT);
+//      }
+//      void loop() {
+//        tone(speakerPin, 40000);
+//        delay(1); // Small delay to avoid overheating
+//      }
+
+// 2. Receiver Code (on the Receiver Nano)
+//    - Continuously read the amplified signal from the microphone via an analog pin.
+//    - Implement Digital Signal Processing (DSP) to:
+//        - Isolate the 40kHz and 75kHz tones.
+//        - Measure the intensity (amplitude) of each tone independently.
+//    - Output the data to the Serial Monitor for analysis:
+//      Serial.print(x_position);
+//      Serial.print(",");
+//      Serial.print(y_position);
+//      Serial.print(",");
+//      Serial.print(intensity40kHz);
+//      Serial.print(",");
+//      Serial.println(intensity75kHz);
+
+// --- EXPERIMENTAL PROCEDURE ---
+
+// 1. Setup: Place the two emitters 1 meter apart with a grid between them.
+// 2. Data Collection: Move the receiver Nano to each point on the grid.
+// 3. Mapping: At each point, record the `(x, y)` coordinates along with the
+//    measured `(intensity40kHz, intensity75kHz)` values. This creates the
+//    "sound map."
+// 4. Localization: To find a position, a new intensity reading would be compared
+//    to the closest match on the pre-generated map.
+
+// --- KEY COMPONENTS ---
+// - **IRF530:** For signal amplification on emitters.
+// - **LM386:** For signal amplification on the receiver.
+// - **HC-SR04:** The individual transmitter/receiver components can be used.
