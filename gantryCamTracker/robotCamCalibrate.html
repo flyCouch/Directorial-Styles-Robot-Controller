@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gantry Calibration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 24px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Gantry Robot Calibration</h1>
+    <p>Place the robot at the origin and then click the button below to capture the calibration data from all cameras.</p>
+    <button onclick="calibrateAllCameras()">Set Origin</button>
+
+    <script>
+        function calibrateAllCameras() {
+            console.log("Sending calibration signal to all cameras...");
+            for (let i = 1; i <= 9; i++) {
+                // Send an HTTP GET request to the new /calibrate endpoint on each camera
+                const url = `http://camera${i}.local/calibrate`;
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`Camera ${i} failed to respond.`);
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log(`Camera ${i} calibration response: ${data}`);
+                    })
+                    .catch(error => {
+                        console.error(`Error with Camera ${i}:`, error);
+                    });
+            }
+        }
+    </script>
+
+</body>
+</html>

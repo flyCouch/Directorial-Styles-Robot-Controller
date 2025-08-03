@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESP32-CAM Robot Grid View</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .camera-container {
+            position: relative;
+            background-color: #444;
+            border: 2px solid #555;
+            border-radius: 8px;
+            overflow: hidden;
+            padding-bottom: 75%; /* Maintains a 4:3 Aspect Ratio for the container */
+        }
+        .camera-container img {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: black;
+        }
+        .camera-label {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>ESP32-CAM Robot Tracking</h1>
+
+    <div class="grid-container">
+        <div class="camera-container">
+            <img id="camera1-stream" src="http://camera1.local/" alt="Camera 1 Stream" />
+            <div class="camera-label">Camera 1</div>
+        </div>
+
+        <div class="camera-container">
+            <img id="camera2-stream" src="http://camera2.local/" alt="Camera 2 Stream" />
+            <div class="camera-label">Camera 2</div>
+        </div>
+        
+        <div class="camera-container">
+            <img id="camera3-stream" src="http://camera3.local/" alt="Camera 3 Stream" />
+            <div class="camera-label">Camera 3</div>
+        </div>
+        
+        <div class="camera-container">
+            <img id="camera4-stream" src="http://camera4.local/" alt="Camera 4 Stream" />
+            <div class="camera-label">Camera 4</div>
+        </div>
+        
+        <div class="camera-container">
+            <img id="camera5-stream" src="http://camera5.local/" alt="Camera 5 Stream" />
+            <div class="camera-label">Camera 5</div>
+        </div>
+        
+        <div class="camera-container">
+            <img id="camera6-stream" src="http://camera6.local/" alt="Camera 6 Stream" />
+            <div class="camera-label">Camera 6</div>
+        </div>
+        
+        <div class="camera-container">
+            <img id="camera7-stream" src="http://camera7.local/" alt="Camera 7 Stream" />
+            <div class="camera-label">Camera 7</div>
+        </div>
+        
+        <div class="camera-container">
+            <img id="camera8-stream" src="http://camera8.local/" alt="Camera 8 Stream" />
+            <div class="camera-label">Camera 8</div>
+        </div>
+        
+        <div class="camera-container">
+            <img id="camera9-stream" src="http://camera9.local/" alt="Camera 9 Stream" />
+            <div class="camera-label">Camera 9</div>
+        </div>
+
+    </div>
+
+<script>
+    // A more robust function to refresh an image
+    function refreshImage(id) {
+        const img = document.getElementById(id);
+        if (img) {
+            // Create a temporary Image object to load the new frame
+            const newImage = new Image();
+            
+            // Set the onload event handler to update the main img src
+            // only after the new image is fully loaded.
+            newImage.onload = () => {
+                img.src = newImage.src;
+            };
+
+            // Set the onerror handler to do nothing, preventing the broken image icon
+            newImage.onerror = () => {
+                // If the new image fails to load, do nothing.
+                // The old image will remain on display.
+            };
+
+            // To force a refresh, we add a unique timestamp query parameter
+            const newSrc = img.src.split('?')[0] + '?' + new Date().getTime();
+            newImage.src = newSrc;
+        }
+    }
+
+    // Loop through all 9 cameras to refresh their streams
+    // This is now set to 200ms for a 5Hz refresh rate
+    setInterval(() => {
+        for (let i = 1; i <= 9; i++) {
+            refreshImage(`camera${i}-stream`);
+        }
+    }, 200);
+</script>
+
+</body>
+</html>
