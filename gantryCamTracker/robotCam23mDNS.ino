@@ -13,8 +13,8 @@
 volatile String robotPoseData = "0,0,0,0";
 
 //Replace with your network credentials
-const char* ssid = "RLTP5573";
-const char* password = "ron12345";
+const char* ssid = "*****";
+const char* password = "*****";
 // --- New definitions for static IP ---
 
 #define PART_BOUNDARY "123456789000000000000987654321"
